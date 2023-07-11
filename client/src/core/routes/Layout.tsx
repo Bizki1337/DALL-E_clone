@@ -1,6 +1,6 @@
 import {Outlet} from 'react-router-dom'
 
-import Header from 'library/common/frames/Header'
+import Header from 'library/frames/Header'
 
 import styles from './routeStyles.module.scss'
 

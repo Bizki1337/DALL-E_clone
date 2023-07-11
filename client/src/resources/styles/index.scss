@@ -1,12 +1,16 @@
+@import './fonts.scss';
+
 html, body {
-    margin: 0;
-    padding: 0;
+	font-family: 'Montserrat';
+	margin: 0;
+	padding: 0;
 }
 
 #root {
-	display: flex;
-    flex-direction: column;
-    flex: 1;
+	flex-direction: column;
+	flex: 1;
+	margin: 15px;
+
 }
 
 * {
