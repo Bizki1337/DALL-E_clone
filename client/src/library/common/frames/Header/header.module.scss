@@ -1,0 +1,26 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px;
+}
+
+.logo {
+    width: 150px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.button {
+    background-color: #6469ff;
+    color: #fff;
+    transition: background-color 1s;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+	&:hover {
+		cursor: pointer;
+        background-color: #868aff;
+	}
+}
