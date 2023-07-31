@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { SyntheticEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import FormFieled from 'library/components/FormField'
@@ -9,23 +9,35 @@ import { getRandomPrompt } from 'library/utils/getRandomPrompt'
 
 import previewPNG from 'resources/pictures/preview.png'
 
+import { ContainerProps } from './CreatePostContainer'
+
 import styles from './createPost.module.scss'
 
 const TITLE = 'Create'
 const SUB_TITLE = 'Generate an imaginative image through DALL-E AI and share it with the community'
 
-const CreatePost = () => {
-	const navigate = useNavigate()
+const CreatePost = ({
+	isPhotoLoading,
+	isSharingLoading,
+	photoText,
+	generateImage,
+	createPost,
+}: ContainerProps) => {
 	const [form, setForm] = useState({
 		name: '',
 		prompt: '',
-		photo: '',
 	})
-	const [generatingImg, setGeneratingImg] = useState(false)
-	const [isLoading, setIsLoading] = useState(false)
 
-	const handleSumbit = () => {
-
+	const handleSumbit = (e: SyntheticEvent) => {
+		e.preventDefault()
+		if (!photoText || !form.name || !form.prompt) alert('Недостаточно данных')
+		if (photoText && form.name && form.prompt) {
+			createPost({
+				name: form.name,
+				prompt: form.prompt,
+				photoText,
+			})
+		}
 	}
 
 	const handleChange = (e: any) => {
@@ -38,7 +50,8 @@ const CreatePost = () => {
 	}
 
 	const generateImg = () => {
-
+		if (!form.prompt) alert('Введите prompt')
+		if (form.prompt) generateImage(form.prompt)
 	}
 
 	return (
@@ -49,7 +62,7 @@ const CreatePost = () => {
 			/>
 			<form
 				className={styles.formWrapper}
-				onSubmit={handleSumbit}
+				onSubmit={(e: SyntheticEvent) => handleSumbit(e)}
 			>
 				<div className={styles.innerWrapper}>
 					<FormFieled
@@ -71,22 +84,9 @@ const CreatePost = () => {
 						handleSurpriseMe={handleSurpriseMe}
 					/>
 				</div>
-				<div>
-					{form.photo ? (
-						<img
-							src={form.photo}
-							alt={form.prompt}
-							className={styles.photo}
-						/>
-					) : (
-						<img
-							src={previewPNG}
-							alt='preview'
-							className={styles.previewImg}
-						/>
-					)}
-
-					{generatingImg && <ColorfulSpinner size={2} />}
+				<div className={styles.resultWrapper}>
+					{photoText && <div>{photoText}</div>}
+					{isPhotoLoading && <ColorfulSpinner size={2} />}
 				</div>
 
 				<div>
@@ -95,7 +95,7 @@ const CreatePost = () => {
 						onClick={generateImg}
 						className={styles.button}
 					>
-						{generatingImg ? 'Generating...' : 'Generate'}
+						{isPhotoLoading ? 'Generating...' : 'Generate'}
 					</button>
 				</div>
 
@@ -105,7 +105,7 @@ const CreatePost = () => {
 						type='submit'
 						className={styles.button}
 					>
-						{isLoading ? 'Sharing...' : 'Share with the Community'}
+						{isSharingLoading ? 'Sharing...' : 'Share with the Community'}
 					</button>
 				</div>
 			</form>

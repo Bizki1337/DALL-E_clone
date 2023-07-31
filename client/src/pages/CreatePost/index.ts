@@ -1,3 +1,3 @@
-import CreatePost from './CreatePost'
+import CreatePostContainer from './CreatePostContainer'
 
-export default CreatePost
+export default CreatePostContainer
